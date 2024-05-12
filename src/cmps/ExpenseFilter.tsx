@@ -1,7 +1,7 @@
-import { SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
+import { SetStateAction, useCallback, useEffect, useState } from 'react';
+import { utilService } from '../services/util.service';
 import { IExpenseFilter } from '../types/expense';
 import MultiRangeSlider from './MultiRangeSlider';
-import { utilService } from '../services/util.service';
 
 interface PropTypes {
 	filterBy: IExpenseFilter;
