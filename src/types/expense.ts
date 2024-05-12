@@ -15,4 +15,5 @@ export interface IExpenseFilter {
 export interface ICategory {
 	id: string;
 	txt: string;
+	imgUrl: string;
 }
