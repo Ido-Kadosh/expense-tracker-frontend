@@ -1,14 +1,9 @@
-import { FormEvent, useEffect, useId, useState } from 'react';
+import { useEffect, useId, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
-import { ICategory, IExpense } from '../types/expense';
+import CategorySelect from '../cmps/CategorySelect';
+import { useMsg } from '../contexts/useMsg';
 import { expenseService } from '../services/expense.service';
-import ReactSelect, { MultiValue } from 'react-select';
-import { utilService } from '../services/util.service';
-
-const categoryOptions = expenseService.getCategories().map(category => ({
-	value: category.id,
-	label: utilService.capitalizeFirstLetter(category.txt),
-}));
+import { ICategory, IExpense } from '../types/expense';
 
 const ExpenseEdit = () => {
 	const [expense, setExpense] = useState<IExpense>(expenseService.getEmptyExpense());
@@ -16,14 +11,15 @@ const ExpenseEdit = () => {
 	const navigate = useNavigate();
 	const titleId = useId();
 	const amountId = useId();
+	const { showErrorMsg } = useMsg();
 
 	useEffect(() => {
 		const loadExpense = async () => {
 			try {
 				const expenseToEdit = await expenseService.getById(params.id!);
 				setExpense(expenseToEdit);
-			} catch (err) {
-				console.log('error loading expense', err);
+			} catch {
+				showErrorMsg('error loading expense');
 				navigate('/');
 			}
 		};
@@ -45,9 +41,12 @@ const ExpenseEdit = () => {
 		setExpense(prev => ({ ...prev, [field]: value }));
 	};
 
-	const handleCategoryChange = (categories: MultiValue<{ value: string; label: string }>) => {
-		const formattedCategories = categories.map(c => ({ id: c.value, txt: c.label }));
-		setExpense(prev => ({ ...prev, categories: formattedCategories }));
+	const handleCategoryChange = (category: ICategory, isChecked: boolean) => {
+		if (isChecked) {
+			setExpense(prev => ({ ...prev, categories: prev.categories.filter(c => c.id !== category.id) }));
+		} else {
+			setExpense(prev => ({ ...prev, categories: [...prev.categories, category] }));
+		}
 	};
 
 	const onSaveExpense = async (ev: React.FormEvent) => {
@@ -63,7 +62,7 @@ const ExpenseEdit = () => {
 	return (
 		<section>
 			<h1>{params.id ? 'Edit expense' : 'Add new expense'}</h1>
-			<form className="grid" onSubmit={onSaveExpense}>
+			<form className="flex flex-col gap-3" onSubmit={onSaveExpense}>
 				<label htmlFor={titleId}>Title: </label>
 				<input
 					className="primary-input"
@@ -88,15 +87,9 @@ const ExpenseEdit = () => {
 					required
 				/>
 
-				<ReactSelect
-					isMulti
-					name="categories"
-					className="basic-multi-select"
-					options={categoryOptions}
-					onChange={handleCategoryChange}
-				/>
+				<CategorySelect selectedCategories={expense.categories} onChange={handleCategoryChange} />
 
-				<button>Save</button>
+				<button className="primary-button">Save</button>
 			</form>
 		</section>
 	);
