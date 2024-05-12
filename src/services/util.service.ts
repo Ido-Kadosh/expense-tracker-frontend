@@ -12,6 +12,20 @@ const formatTimestamp = (timestamp: number) => {
 	return formattedDate;
 };
 
+const makeId = (length = 24) => {
+	var txt = '';
+	var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+	for (var i = 0; i < length; i++) {
+		txt += possible.charAt(Math.floor(Math.random() * possible.length));
+	}
+	return txt;
+};
+
+const capitalizeFirstLetter = (str: string): string => {
+	return str.charAt(0).toUpperCase() + str.slice(1);
+};
 export const utilService = {
 	formatTimestamp,
+	capitalizeFirstLetter,
+	makeId,
 };
