@@ -4,9 +4,10 @@ import Loader from '../cmps/Loader';
 import { expenseService } from '../services/expense.service';
 import { IExpense, IExpenseFilter } from '../types/expense';
 import ExpenseFilter from '../cmps/ExpenseFilter';
+import { Link } from 'react-router-dom';
 
 const ExpenseIndex = () => {
-	const [expenses, setExpenses] = useState<IExpense[] | null>();
+	const [expenses, setExpenses] = useState<IExpense[]>([]);
 	const [filterBy, setFilterBy] = useState<IExpenseFilter>(expenseService.getDefaultFilter());
 
 	useEffect(() => {
@@ -22,11 +23,25 @@ const ExpenseIndex = () => {
 		loadExpenses();
 	}, [filterBy]);
 
+	const onRemoveExpense = async (expenseId: string) => {
+		try {
+			await expenseService.remove(expenseId);
+			setExpenses(prev => prev.filter(e => e._id !== expenseId));
+		} catch (err) {
+			console.log('cannot delete expense');
+		}
+	};
+
 	if (!expenses) return <Loader />;
 	return (
-		<section className="mt-5">
-			<ExpenseFilter filterBy={filterBy} onSetFilterBy={setFilterBy} />
-			<ExpenseList expenses={expenses} />
+		<section>
+			<div className="flex justify-between items-center mb-5">
+				<ExpenseFilter filterBy={filterBy} onSetFilterBy={setFilterBy} />
+				<Link className="primary-button" to="/edit">
+					Add new
+				</Link>
+			</div>
+			<ExpenseList expenses={expenses} onRemoveExpense={onRemoveExpense} />
 		</section>
 	);
 };

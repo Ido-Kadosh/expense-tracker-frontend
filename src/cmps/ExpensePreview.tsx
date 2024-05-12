@@ -27,8 +27,14 @@ const ExpensePreview = ({ expense, onRemoveExpense }: PropTypes) => {
 					<span className=" font-semibold ">${expense.amount}</span>
 				</div>
 			</div>
+			<div className="flex gap-1 group-hover:visible invisible pb-2">
+				<Link to={`/edit/${expense._id}`}>
+					<LuPen />
+				</Link>
+				<button onClick={() => onRemoveExpense(expense._id)}>
+					<LuTrash />
+				</button>
 			</div>
-			<span className="self-end font-semibold">${expense.amount}</span>
 		</div>
 	);
 };
