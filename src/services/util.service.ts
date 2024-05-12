@@ -24,8 +24,22 @@ const makeId = (length = 24) => {
 const capitalizeFirstLetter = (str: string): string => {
 	return str.charAt(0).toUpperCase() + str.slice(1);
 };
+
+const debounce = <T extends (...args: any[]) => any>(callback: T, waitFor = 250) => {
+	let timeout = 0;
+	return (...args: Parameters<T>): ReturnType<T> => {
+		let result: any;
+		clearTimeout(timeout);
+		timeout = window.setTimeout(() => {
+			result = callback(...args);
+		}, waitFor);
+		return result;
+	};
+};
+
 export const utilService = {
 	formatTimestamp,
 	capitalizeFirstLetter,
 	makeId,
+	debounce,
 };

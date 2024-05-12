@@ -1,6 +1,7 @@
-import { SetStateAction } from 'react';
+import { SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
 import { IExpenseFilter } from '../types/expense';
 import MultiRangeSlider from './MultiRangeSlider';
+import { utilService } from '../services/util.service';
 
 interface PropTypes {
 	filterBy: IExpenseFilter;
@@ -8,6 +9,13 @@ interface PropTypes {
 	ranges: { min: number; max: number };
 }
 const ExpenseFilter = ({ filterBy, onSetFilterBy, ranges }: PropTypes) => {
+	const [filterByToEdit, setFilterByToEdit] = useState(filterBy);
+	const debouncedOnSetFilterBy = useCallback(utilService.debounce(onSetFilterBy), []);
+
+	useEffect(() => {
+		debouncedOnSetFilterBy(filterByToEdit);
+	}, [filterByToEdit]);
+
 	const handleChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
 		const field = target.name;
 		let value: number | string = target.value;
@@ -17,11 +25,11 @@ const ExpenseFilter = ({ filterBy, onSetFilterBy, ranges }: PropTypes) => {
 				value = +value || '';
 				break;
 		}
-		onSetFilterBy(prev => ({ ...prev, [field]: value }));
+		setFilterByToEdit(prev => ({ ...prev, [field]: value }));
 	};
 
 	const handlePriceChange = (minAmount: number, maxAmount: number) => {
-		onSetFilterBy(prev => ({ ...prev, maxAmount, minAmount }));
+		setFilterByToEdit(prev => ({ ...prev, maxAmount, minAmount }));
 	};
 
 	return (
@@ -31,7 +39,7 @@ const ExpenseFilter = ({ filterBy, onSetFilterBy, ranges }: PropTypes) => {
 					type="text"
 					placeholder="Title"
 					name="title"
-					value={filterBy.title}
+					value={filterByToEdit.title}
 					onChange={handleChange}
 					className="primary-input"
 				/>

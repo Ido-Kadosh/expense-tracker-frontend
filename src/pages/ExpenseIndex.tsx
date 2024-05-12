@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import ExpenseFilter from '../cmps/ExpenseFilter';
 import ExpenseList from '../cmps/ExpenseList';
 import Loader from '../cmps/Loader';
+import { useMsg } from '../contexts/useMsg';
 import { expenseService } from '../services/expense.service';
 import { IExpense, IExpenseFilter } from '../types/expense';
-import ExpenseFilter from '../cmps/ExpenseFilter';
-import { Link } from 'react-router-dom';
-import { useMsg } from '../contexts/useMsg';
 
 const ExpenseIndex = () => {
 	const [expenses, setExpenses] = useState<IExpense[]>([]);

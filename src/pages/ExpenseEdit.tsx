@@ -78,7 +78,7 @@ const ExpenseEdit = () => {
 				<label htmlFor={amountId}>Amount:</label>
 				<input
 					className="primary-input"
-					value={expense.amount}
+					value={expense.amount || ''}
 					onChange={handleChange}
 					type="number"
 					placeholder="Amount"

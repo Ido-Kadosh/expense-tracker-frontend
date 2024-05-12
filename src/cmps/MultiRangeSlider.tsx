@@ -70,7 +70,7 @@ const MultiRangeSlider = ({ min, max, onChange }: PropTypes) => {
 					const value = Math.max(Number(event.target.value), minVal + 1);
 					setMaxVal(value);
 				}}
-				className="thumb  z-[4] pointer-events-none absolute h-0 w-[12.5rem] outline-none"
+				className="thumb z-[4] pointer-events-none absolute h-0 w-[12.5rem] outline-none"
 			/>
 
 			<div className="relative w-[12.5rem]">
