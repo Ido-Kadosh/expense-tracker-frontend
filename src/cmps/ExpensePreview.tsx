@@ -2,6 +2,8 @@ import { LuPen, LuTrash } from 'react-icons/lu';
 import { Link } from 'react-router-dom';
 import { utilService } from '../services/util.service';
 import { IExpense } from '../types/expense';
+import CategoryPreview from './CategoryPreview';
+import ScrollableContent from './ScrollableContent';
 
 interface PropTypes {
 	expense: IExpense;
@@ -10,30 +12,26 @@ interface PropTypes {
 
 const ExpensePreview = ({ expense, onRemoveExpense }: PropTypes) => {
 	return (
-		<div className="group flex gap-2 items-center">
-			<div className="pb-2 flex justify-between group w-full border-b  ">
-				<div className="flex flex-col ">
-					<span className="text-lg font-semibold">{expense.title}</span>
+		<div className="group flex gap-2 items-center border-b">
+			<div className="pb-2 flex justify-between group w-full items-center gap-5">
+				<div className="flex flex-col w-40">
+					<span className="text-lg font-semibold truncate">{expense.title}</span>
 					<span>{utilService.formatTimestamp(expense.createdAt)}</span>
 				</div>
-				<div className="flex gap-5 items-center">
-					<ul className="flex gap-2">
-						{expense.categories.map(c => (
-							<li key={c.id} className=" rounded-full border-slate-300 border py-1 px-4">
-								{c.txt}
-							</li>
-						))}
-					</ul>
-					<span className=" font-semibold ">${expense.amount}</span>
+				<ScrollableContent>
+					{expense.categories.map(category => (
+						<CategoryPreview key={category.id} category={category} />
+					))}
+				</ScrollableContent>
+				<div className="flex gap-1 group-hover:visible invisible">
+					<Link to={`/edit/${expense._id}`}>
+						<LuPen />
+					</Link>
+					<button onClick={() => onRemoveExpense(expense._id)}>
+						<LuTrash />
+					</button>
 				</div>
-			</div>
-			<div className="flex gap-1 group-hover:visible invisible pb-2">
-				<Link to={`/edit/${expense._id}`}>
-					<LuPen />
-				</Link>
-				<button onClick={() => onRemoveExpense(expense._id)}>
-					<LuTrash />
-				</button>
+				<span className=" font-semibold ">${expense.amount}</span>
 			</div>
 		</div>
 	);
