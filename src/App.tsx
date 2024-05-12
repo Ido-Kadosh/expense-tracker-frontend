@@ -4,7 +4,7 @@ import ExpenseEdit from './pages/ExpenseEdit';
 
 function App() {
 	return (
-		<main className="grid w-full h-screen max-w-7xl m-auto">
+		<main className="grid w-full max-w-7xl m-auto pt-5">
 			<Router>
 				<Routes>
 					<Route path="/" element={<ExpenseIndex />} />

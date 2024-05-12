@@ -1,4 +1,4 @@
-import { SetStateAction, useId, useState } from 'react';
+import { SetStateAction, useId } from 'react';
 import { IExpenseFilter } from '../types/expense';
 
 interface PropTypes {
@@ -12,11 +12,11 @@ const ExpenseFilter = ({ filterBy, onSetFilterBy }: PropTypes) => {
 	const handleChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
 		const field = target.name;
 		let value: number | string = target.value;
-
 		switch (target.type) {
 			case 'number':
 			case 'range':
 				value = +value || '';
+				break;
 		}
 		onSetFilterBy(prev => ({ ...prev, [field]: value }));
 	};
