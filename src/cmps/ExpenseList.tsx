@@ -8,11 +8,14 @@ interface PropTypes {
 const ExpenseList = ({ expenses, onRemoveExpense }: PropTypes) => {
 	if (!expenses.length) return <div>No expenses found matching this criteria</div>;
 	return (
-		<ul className="space-y-2">
-			{expenses.map(expense => (
-				<li key={expense._id}>{<ExpensePreview expense={expense} onRemoveExpense={onRemoveExpense} />}</li>
-			))}
-		</ul>
+		<div>
+			<h2 className="text-2xl font-bold mb-5  border-b">Expenses</h2>
+			<ul className="space-y-2">
+				{expenses.map(expense => (
+					<li key={expense._id}>{<ExpensePreview expense={expense} onRemoveExpense={onRemoveExpense} />}</li>
+				))}
+			</ul>
+		</div>
 	);
 };
 
