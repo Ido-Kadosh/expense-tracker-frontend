@@ -8,9 +8,62 @@
 	}
 
 	.primary-input {
-		@apply appearance-none block w-full bg-white text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none  focus:border-gray-500;
+		@apply appearance-none  bg-white text-gray-700 border border-gray-200 rounded py-3 px-4  leading-tight focus:outline-none  focus:border-gray-500;
 	}
 	.primary-input[type='number'] {
 		@apply [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none;
+	}
+
+	.button-scroll-left {
+		background: linear-gradient(90deg, #fff 50%, hsla(0, 0%, 100%, 0));
+	}
+	.button-scroll-right {
+		background: linear-gradient(270deg, #fff 50%, hsla(0, 0%, 100%, 0));
+	}
+}
+
+@layer utilities {
+	/* Chrome, Safari and Opera */
+	.no-scrollbar::-webkit-scrollbar {
+		display: none;
+	}
+
+	.no-scrollbar {
+		-ms-overflow-style: none; /* IE and Edge */
+		scrollbar-width: none; /* Firefox */
+	}
+
+	/* --- Slider Styles --- */
+	/* Removing the default appearance */
+	.thumb,
+	.thumb::-webkit-slider-thumb {
+		-webkit-appearance: none;
+	}
+
+	/* For Chrome browsers */
+	.thumb::-webkit-slider-thumb {
+		background-color: #f1f5f7;
+		border: none;
+		border-radius: 50%;
+		box-shadow: 0 0 1px 1px #ced4da;
+		cursor: pointer;
+		height: 18px;
+		width: 18px;
+		margin-top: 4px;
+		pointer-events: all;
+		position: relative;
+	}
+	/* For Firefox browsers*/
+	.thumb::-moz-range-thumb {
+		background-color: #f1f5f7;
+		border: none;
+		border-radius: 50%;
+		box-shadow: 0 0 1px 1px #ced4da;
+		cursor: pointer;
+		height: 18px;
+		width: 18px;
+		margin-top: 4px;
+		pointer-events: all;
+		position: relative;
 	}
 }
