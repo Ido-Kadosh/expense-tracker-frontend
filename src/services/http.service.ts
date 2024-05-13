@@ -1,4 +1,5 @@
 import Axios from 'axios';
+import { STORAGE_KEY_LOGGED_IN_USER } from './auth.service';
 
 const BASE_URL = process.env.NODE_ENV === 'production' ? '/api/' : '//localhost:3030/api/';
 
@@ -34,7 +35,10 @@ async function ajax(endpoint: string, method: string, data?: object) {
 		console.log(`Had Issues ${method}ing to the backend, endpoint: ${endpoint}, with data: `, data);
 		console.dir(err);
 		if (err.response?.status === 401) {
-			sessionStorage.clear();
+			if (localStorage.getItem(STORAGE_KEY_LOGGED_IN_USER)) {
+				localStorage.removeItem(STORAGE_KEY_LOGGED_IN_USER);
+				window.location.reload();
+			}
 		}
 		throw err;
 	}

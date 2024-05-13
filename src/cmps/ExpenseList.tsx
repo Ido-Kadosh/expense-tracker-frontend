@@ -10,7 +10,7 @@ const ExpenseList = ({ expenses, onRemoveExpense }: PropTypes) => {
 	return (
 		<div>
 			<h2 className="text-2xl font-bold mb-5 border-b">Expenses</h2>
-			<ul className="flex flex-col gap-2 px-4">
+			<ul className="flex flex-col gap-2 px-4 overflow-auto max-h-[50vh]">
 				{expenses.map(expense => (
 					<ExpensePreview key={expense._id} expense={expense} onRemoveExpense={onRemoveExpense} />
 				))}
