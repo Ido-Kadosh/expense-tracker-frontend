@@ -5,20 +5,38 @@ import ExpenseList from '../cmps/ExpenseList';
 import Loader from '../cmps/Loader';
 import { useMsg } from '../contexts/useMsg';
 import { expenseService } from '../services/expense.service';
-import { IExpense, IExpenseFilter } from '../types/expense';
+import { ICategoryCount, IExpense, IExpenseFilter } from '../types/expense';
+import CategoryChart from '../cmps/CategoryChart';
 
 const ExpenseIndex = () => {
 	const [expenses, setExpenses] = useState<IExpense[]>([]);
 	const [filterBy, setFilterBy] = useState<IExpenseFilter>(expenseService.getDefaultFilter());
 	const [ranges, SetRanges] = useState<{ min: number; max: number }>({ min: 1, max: 1000 });
+	const [categoryCounts, setCategoryCounts] = useState<ICategoryCount[] | null>(null);
 	const { showErrorMsg } = useMsg();
 
 	useEffect(() => {
 		const getRanges = async () => {
-			const ranges = await expenseService.getPriceRanges();
-			SetRanges(ranges);
+			try {
+				const ranges = await expenseService.getPriceRanges();
+				SetRanges(ranges);
+			} catch {
+				SetRanges({ min: 1, max: 1000 }); // issue with ranges shouldn't mess up app flow
+			}
 		};
 		getRanges();
+	}, [expenses]);
+
+	useEffect(() => {
+		const getCategoryCount = async () => {
+			try {
+				const categoryCounts = await expenseService.getCategoryCounts();
+				setCategoryCounts(categoryCounts);
+			} catch {
+				setCategoryCounts([]);
+			}
+		};
+		getCategoryCount();
 	}, [expenses]);
 
 	useEffect(() => {
@@ -46,13 +64,16 @@ const ExpenseIndex = () => {
 	if (!expenses) return <Loader />;
 	return (
 		<section>
-			<div className="flex justify-between items-center mb-5">
-				<ExpenseFilter filterBy={filterBy} onSetFilterBy={setFilterBy} ranges={ranges} />
-				<Link className="primary-button" to="/edit">
-					Add new
-				</Link>
+			<div>
+				<div className="flex justify-between items-center mb-5">
+					<ExpenseFilter filterBy={filterBy} onSetFilterBy={setFilterBy} ranges={ranges} />
+					<Link className="primary-button" to="/edit">
+						Add new
+					</Link>
+				</div>
+				<ExpenseList expenses={expenses} onRemoveExpense={onRemoveExpense} />
 			</div>
-			<ExpenseList expenses={expenses} onRemoveExpense={onRemoveExpense} />
+			{/* <CategoryChart categoryCounts={categoryCounts} /> */}
 		</section>
 	);
 };

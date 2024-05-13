@@ -1,4 +1,4 @@
-import { IExpense, IExpenseFilter } from '../types/expense';
+import { ICategoryCount, IExpense, IExpenseFilter } from '../types/expense';
 import { httpService } from './http.service';
 
 const categories = [
@@ -41,6 +41,10 @@ const getPriceRanges = async (): Promise<{ min: number; max: number }> => {
 	return httpService.get(BASE_URL + '/range');
 };
 
+const getCategoryCounts = async (): Promise<ICategoryCount[]> => {
+	return httpService.get(BASE_URL + '/category-counts');
+};
+
 const getDefaultFilter = (): IExpenseFilter => {
 	return { title: '', minAmount: 0 };
 };
@@ -68,4 +72,5 @@ export const expenseService = {
 	getEmptyExpense,
 	getCategories,
 	getPriceRanges,
+	getCategoryCounts,
 };

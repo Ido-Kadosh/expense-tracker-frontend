@@ -17,3 +17,9 @@ export interface ICategory {
 	txt: string;
 	imgUrl: string;
 }
+
+export interface ICategoryCount {
+	count: number;
+	txt: string;
+	imgUrl: string;
+}
