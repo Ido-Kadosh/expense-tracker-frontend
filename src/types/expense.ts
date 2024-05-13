@@ -10,6 +10,7 @@ export interface IExpenseFilter {
 	title?: string;
 	minAmount?: number;
 	maxAmount?: number;
+	categories?: ICategory[];
 }
 
 export interface ICategory {

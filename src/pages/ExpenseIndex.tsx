@@ -61,17 +61,22 @@ const ExpenseIndex = () => {
 		}
 	};
 
+	const onSetFilterBy = (newFilterBy: Partial<IExpenseFilter> | ((prev: IExpenseFilter) => IExpenseFilter)) => {
+		if (typeof newFilterBy === 'function') return setFilterBy(newFilterBy);
+		setFilterBy(prev => ({ ...prev, ...newFilterBy }));
+	};
+
 	if (!expenses) return <Loader />;
 	return (
 		<section>
 			<div>
 				<div className="flex justify-between items-center mb-5">
-					<ExpenseFilter filterBy={filterBy} onSetFilterBy={setFilterBy} ranges={ranges} />
+					<ExpenseFilter filterBy={filterBy} onSetFilterBy={onSetFilterBy} ranges={ranges} />
 					<Link className="primary-button" to="/edit">
 						Add new
 					</Link>
 				</div>
-				<ExpenseList expenses={expenses} onRemoveExpense={onRemoveExpense} />
+				<ExpenseList expenses={expenses} onRemoveExpense={onRemoveExpense} onSetFilter={onSetFilterBy} />
 			</div>
 			<CategoryChart categoryCounts={categoryCounts} />
 		</section>
