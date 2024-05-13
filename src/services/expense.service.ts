@@ -46,7 +46,7 @@ const getCategoryCounts = async (): Promise<ICategoryCount[]> => {
 };
 
 const getDefaultFilter = (): IExpenseFilter => {
-	return { title: '', minAmount: 0 };
+	return { title: '', minAmount: 0, maxAmount: 1000 };
 };
 
 const getEmptyExpense = (): IExpense => {
