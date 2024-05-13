@@ -1,16 +1,16 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import CategoryChart from '../cmps/CategoryChart';
 import ExpenseFilter from '../cmps/ExpenseFilter';
 import ExpenseList from '../cmps/ExpenseList';
 import Loader from '../cmps/Loader';
-import { useMsg } from '../contexts/useMsg';
+import { useMsg } from '../contexts/MsgContext/useMsg';
 import useUpdateEffect from '../hooks/useUpdateEffect';
 import { expenseService } from '../services/expense.service';
 import { ICategoryCount, IExpense, IExpenseFilter } from '../types/expense';
 
 const ExpenseIndex = () => {
-	const [expenses, setExpenses] = useState<IExpense[]>([]);
+	const [expenses, setExpenses] = useState<IExpense[]>();
 	const [filterBy, setFilterBy] = useState<IExpenseFilter>(expenseService.getDefaultFilter());
 	const [ranges, SetRanges] = useState<{ min: number; max: number }>({ min: 1, max: 1000 });
 	const [categoryCounts, setCategoryCounts] = useState<ICategoryCount[] | null>(null);
@@ -29,7 +29,7 @@ const ExpenseIndex = () => {
 		const getCategoryCount = async () => {
 			try {
 				const categoryCounts = await expenseService.getCategoryCounts();
-				console.log('categoryCounts:', categoryCounts, expenses);
+
 				setCategoryCounts(categoryCounts);
 			} catch {
 				setCategoryCounts([]);
@@ -39,7 +39,7 @@ const ExpenseIndex = () => {
 		getRanges();
 	}, [expenses]);
 
-	useUpdateEffect(() => {
+	useEffect(() => {
 		const loadExpenses = async () => {
 			try {
 				const newExpenses = await expenseService.query(filterBy);
@@ -55,9 +55,10 @@ const ExpenseIndex = () => {
 	const onRemoveExpense = async (expenseId: string) => {
 		try {
 			await expenseService.remove(expenseId);
-			setExpenses(prev => prev.filter(e => e._id !== expenseId));
-		} catch {
-			showErrorMsg('cannot delete expense');
+			setExpenses(prev => prev!.filter(e => e._id !== expenseId));
+		} catch (err: any) {
+			const errorMsg = err.response?.data?.msg || 'Cannot delete expense';
+			showErrorMsg(errorMsg);
 		}
 	};
 
