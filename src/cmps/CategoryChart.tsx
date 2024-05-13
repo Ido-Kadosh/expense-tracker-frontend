@@ -23,7 +23,7 @@ const colors = [
 	'#CC8331',
 ];
 
-const ApexChart = ({ categoryCounts }: PropTypes) => {
+const CategoryChart = ({ categoryCounts }: PropTypes) => {
 	const [series, setSeries] = useState<ApexAxisChartSeries>([
 		{
 			data: [],
@@ -74,6 +74,7 @@ const ApexChart = ({ categoryCounts }: PropTypes) => {
 		]);
 	}, [categoryCounts]);
 
+	// console.log(categoryCounts);
 	return (
 		<div className="mt-5">
 			<div>
@@ -84,4 +85,4 @@ const ApexChart = ({ categoryCounts }: PropTypes) => {
 	);
 };
 
-export default ApexChart;
+export default CategoryChart;

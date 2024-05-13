@@ -1,12 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import CategoryChart from '../cmps/CategoryChart';
 import ExpenseFilter from '../cmps/ExpenseFilter';
 import ExpenseList from '../cmps/ExpenseList';
 import Loader from '../cmps/Loader';
 import { useMsg } from '../contexts/useMsg';
+import useUpdateEffect from '../hooks/useUpdateEffect';
 import { expenseService } from '../services/expense.service';
 import { ICategoryCount, IExpense, IExpenseFilter } from '../types/expense';
-import CategoryChart from '../cmps/CategoryChart';
 
 const ExpenseIndex = () => {
 	const [expenses, setExpenses] = useState<IExpense[]>([]);
@@ -15,7 +16,7 @@ const ExpenseIndex = () => {
 	const [categoryCounts, setCategoryCounts] = useState<ICategoryCount[] | null>(null);
 	const { showErrorMsg } = useMsg();
 
-	useEffect(() => {
+	useUpdateEffect(() => {
 		const getRanges = async () => {
 			try {
 				const ranges = await expenseService.getPriceRanges();
@@ -24,22 +25,21 @@ const ExpenseIndex = () => {
 				SetRanges({ min: 1, max: 1000 }); // issue with ranges shouldn't mess up app flow
 			}
 		};
-		getRanges();
-	}, [expenses]);
 
-	useEffect(() => {
 		const getCategoryCount = async () => {
 			try {
 				const categoryCounts = await expenseService.getCategoryCounts();
+				console.log('categoryCounts:', categoryCounts, expenses);
 				setCategoryCounts(categoryCounts);
 			} catch {
 				setCategoryCounts([]);
 			}
 		};
 		getCategoryCount();
+		getRanges();
 	}, [expenses]);
 
-	useEffect(() => {
+	useUpdateEffect(() => {
 		const loadExpenses = async () => {
 			try {
 				const newExpenses = await expenseService.query(filterBy);
@@ -73,7 +73,7 @@ const ExpenseIndex = () => {
 				</div>
 				<ExpenseList expenses={expenses} onRemoveExpense={onRemoveExpense} />
 			</div>
-			{/* <CategoryChart categoryCounts={categoryCounts} /> */}
+			<CategoryChart categoryCounts={categoryCounts} />
 		</section>
 	);
 };
