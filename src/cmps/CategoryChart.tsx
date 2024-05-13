@@ -24,11 +24,7 @@ const colors = [
 ];
 
 const CategoryChart = ({ categoryCounts }: PropTypes) => {
-	const [series, setSeries] = useState<ApexAxisChartSeries>([
-		{
-			data: [],
-		},
-	]);
+	const [series, setSeries] = useState<ApexAxisChartSeries>([{ data: [] }]);
 	const [options, setOptions] = useState<ApexOptions>({
 		chart: {
 			type: 'bar',
@@ -47,7 +43,7 @@ const CategoryChart = ({ categoryCounts }: PropTypes) => {
 			enabled: false,
 		},
 		xaxis: {
-			categories: [''],
+			categories: [],
 		},
 		colors: [],
 	});
@@ -74,7 +70,6 @@ const CategoryChart = ({ categoryCounts }: PropTypes) => {
 		]);
 	}, [categoryCounts]);
 
-	// console.log(categoryCounts);
 	return (
 		<div className="mt-5">
 			<div>

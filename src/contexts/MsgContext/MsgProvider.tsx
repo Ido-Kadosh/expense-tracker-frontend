@@ -10,7 +10,7 @@ export interface IMsgProvider {
 	showSuccessMsg: (...args: any[]) => void;
 }
 
-export function MsgProvider({ children }: { children: React.ReactNode }) {
+const MsgProvider = ({ children }: { children: React.ReactNode }) => {
 	const [msg, setMsg] = useState<IMsg | null>(null);
 
 	const showErrorMsg = (...args: any[]) => {
@@ -26,4 +26,6 @@ export function MsgProvider({ children }: { children: React.ReactNode }) {
 	const value: IMsgProvider = { msg, setMsg, showErrorMsg, showSuccessMsg };
 
 	return <MsgContext.Provider value={value}>{children}</MsgContext.Provider>;
-}
+};
+
+export default MsgProvider;

@@ -4,7 +4,7 @@ import { useMsg } from '../contexts/MsgContext/useMsg';
 import { authService } from '../services/auth.service';
 import { useUser } from '../contexts/UserContext/useUser';
 
-export function LoginSignUp() {
+const LoginSignUp = () => {
 	const [credentials, setCredentials] = useState(authService.getEmptyCredentials());
 	const [isSignUp, setIsSignUp] = useState(false);
 	const location = useLocation();
@@ -16,11 +16,11 @@ export function LoginSignUp() {
 		setIsSignUp(location.pathname.includes('signup'));
 	}, [location]);
 
-	function handleChange({ target }: React.ChangeEvent<HTMLInputElement>) {
+	const handleChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
 		const field = target.name;
 		const value = target.value;
 		setCredentials(prev => ({ ...prev, [field]: value }));
-	}
+	};
 
 	const onSubmit = async (ev: React.FormEvent) => {
 		ev.preventDefault();
@@ -97,4 +97,6 @@ export function LoginSignUp() {
 			)}
 		</section>
 	);
-}
+};
+
+export default LoginSignUp;

@@ -22,7 +22,7 @@ export const httpService = {
 	},
 };
 
-async function ajax(endpoint: string, method: string, data?: object) {
+const ajax = async (endpoint: string, method: string, data?: object) => {
 	try {
 		const res = await axios({
 			url: `${BASE_URL}${endpoint}`,
@@ -42,4 +42,4 @@ async function ajax(endpoint: string, method: string, data?: object) {
 		}
 		throw err;
 	}
-}
+};

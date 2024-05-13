@@ -29,7 +29,6 @@ const ExpenseIndex = () => {
 		const getCategoryCount = async () => {
 			try {
 				const categoryCounts = await expenseService.getCategoryCounts();
-
 				setCategoryCounts(categoryCounts);
 			} catch {
 				setCategoryCounts([]);

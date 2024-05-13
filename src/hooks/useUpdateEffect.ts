@@ -5,7 +5,7 @@ import { useEffect, useRef } from 'react';
  * @param {Function} effect
  * @param {Array<any>} dependencies
  */
-const useUpdateEffect = (effect: Function, dependencies: Array<any> = []) => {
+const useUpdateEffect = (effect: Function, dependencies: any[] = []) => {
 	const isInitialMount = useRef(true);
 
 	useEffect(() => {

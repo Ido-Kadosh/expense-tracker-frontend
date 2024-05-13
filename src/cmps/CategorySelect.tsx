@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { ICategory } from '../types/expense';
 import { expenseService } from '../services/expense.service';
+import { ICategory } from '../types/expense';
 import CategoryPreview from './CategoryPreview';
 
 const categories = expenseService.getCategories();

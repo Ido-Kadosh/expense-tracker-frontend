@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
+import { useMsg } from '../contexts/MsgContext/useMsg';
 import { useUser } from '../contexts/UserContext/useUser';
 import { authService } from '../services/auth.service';
-import { useMsg } from '../contexts/MsgContext/useMsg';
 
 const UserInfo = () => {
 	const { user, setUser } = useUser();

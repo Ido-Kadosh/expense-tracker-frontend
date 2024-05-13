@@ -1,13 +1,14 @@
-import { Routes, BrowserRouter as Router, Route } from 'react-router-dom';
-import ExpenseIndex from './pages/ExpenseIndex';
-import ExpenseEdit from './pages/ExpenseEdit';
-import { MsgProvider } from './contexts/MsgContext/MsgProvider';
-import { UserMsg } from './cmps/userMsg';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import AppHeader from './cmps/AppHeader';
-import { LoginSignUp } from './pages/loginSignup';
-import { UserProvider } from './contexts/UserContext/UserProvider';
 
-function App() {
+import ExpenseEdit from './pages/ExpenseEdit';
+import ExpenseIndex from './pages/ExpenseIndex';
+import UserMsg from './cmps/userMsg';
+import MsgProvider from './contexts/MsgContext/MsgProvider';
+import UserProvider from './contexts/UserContext/UserProvider';
+import LoginSignUp from './pages/loginSignup';
+
+const App = () => {
 	return (
 		<div>
 			<Router>
@@ -29,6 +30,6 @@ function App() {
 			</Router>
 		</div>
 	);
-}
+};
 
 export default App;
