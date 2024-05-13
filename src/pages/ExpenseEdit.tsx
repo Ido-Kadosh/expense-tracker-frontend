@@ -1,7 +1,7 @@
 import { useEffect, useId, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import CategorySelect from '../cmps/CategorySelect';
-import { useMsg } from '../contexts/useMsg';
+import { useMsg } from '../contexts/MsgContext/useMsg';
 import { expenseService } from '../services/expense.service';
 import { ICategory, IExpense } from '../types/expense';
 

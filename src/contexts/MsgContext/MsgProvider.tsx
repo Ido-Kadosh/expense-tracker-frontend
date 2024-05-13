@@ -1,5 +1,5 @@
 import { createContext, useState } from 'react';
-import { IMsg } from '../types/msg';
+import { IMsg } from '../../types/msg';
 
 export const MsgContext = createContext<IMsgProvider>({} as IMsgProvider);
 
@@ -10,7 +10,7 @@ export interface IMsgProvider {
 	showSuccessMsg: (...args: any[]) => void;
 }
 
-export function MsgProvider({ children }: any) {
+export function MsgProvider({ children }: { children: React.ReactNode }) {
 	const [msg, setMsg] = useState<IMsg | null>(null);
 
 	const showErrorMsg = (...args: any[]) => {

@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { useMsg } from '../contexts/useMsg';
+import { useMsg } from '../contexts/MsgContext/useMsg';
 
 export function UserMsg() {
 	const timeoutIdRef = useRef<ReturnType<typeof setTimeout> | null>();
