@@ -13,7 +13,8 @@ const UserInfo = () => {
 			setUser(null);
 			showSuccessMsg(res.msg);
 		} catch (err: any) {
-			showErrorMsg(err?.response?.data?.msg || 'Error Logging out');
+			const errorMsg = err.response?.data?.msg || 'Cannot logout';
+			showErrorMsg(errorMsg);
 		}
 	};
 

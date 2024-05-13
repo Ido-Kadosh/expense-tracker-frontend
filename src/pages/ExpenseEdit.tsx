@@ -4,6 +4,7 @@ import CategorySelect from '../cmps/CategorySelect';
 import { useMsg } from '../contexts/MsgContext/useMsg';
 import { expenseService } from '../services/expense.service';
 import { ICategory, IExpense } from '../types/expense';
+import { SOCKET_EMIT_ADD_EXPENSE, SOCKET_EMIT_UPDATE_EXPENSE, socketService } from '../services/socket.service';
 
 const ExpenseEdit = () => {
 	const [expense, setExpense] = useState<IExpense>(expenseService.getEmptyExpense());
@@ -18,8 +19,9 @@ const ExpenseEdit = () => {
 			try {
 				const expenseToEdit = await expenseService.getById(params.id!);
 				setExpense(expenseToEdit);
-			} catch {
-				showErrorMsg('error loading expense');
+			} catch (err: any) {
+				const errorMsg = err.response?.data?.msg || 'Cannot load expense';
+				showErrorMsg(errorMsg);
 				navigate('/');
 			}
 		};
@@ -52,10 +54,16 @@ const ExpenseEdit = () => {
 	const onSaveExpense = async (ev: React.FormEvent) => {
 		try {
 			ev.preventDefault();
-			expenseService.save(expense);
+			const savedExpense = await expenseService.save(expense);
+			if (expense._id) {
+				socketService.emit(SOCKET_EMIT_UPDATE_EXPENSE, savedExpense);
+			} else {
+				socketService.emit(SOCKET_EMIT_ADD_EXPENSE, savedExpense);
+			}
 			navigate('/');
-		} catch (err) {
-			console.log('error saving expense', err);
+		} catch (err: any) {
+			const errorMsg = err.response?.data?.msg || 'Cannot save expense';
+			showErrorMsg(errorMsg);
 		}
 	};
 

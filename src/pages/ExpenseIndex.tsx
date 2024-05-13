@@ -8,13 +8,43 @@ import { useMsg } from '../contexts/MsgContext/useMsg';
 import useUpdateEffect from '../hooks/useUpdateEffect';
 import { expenseService } from '../services/expense.service';
 import { ICategoryCount, IExpense, IExpenseFilter } from '../types/expense';
+import {
+	SOCKET_EMIT_REMOVE_EXPENSE,
+	SOCKET_EVENT_EXPENSE_ADDED,
+	SOCKET_EVENT_EXPENSE_REMOVED,
+	SOCKET_EVENT_EXPENSE_UPDATED,
+	socketService,
+} from '../services/socket.service';
 
 const ExpenseIndex = () => {
-	const [expenses, setExpenses] = useState<IExpense[]>();
+	const [expenses, setExpenses] = useState<IExpense[]>([]);
 	const [filterBy, setFilterBy] = useState<IExpenseFilter>(expenseService.getDefaultFilter());
 	const [ranges, SetRanges] = useState<{ min: number; max: number }>({ min: 1, max: 1000 });
 	const [categoryCounts, setCategoryCounts] = useState<ICategoryCount[] | null>(null);
 	const { showErrorMsg } = useMsg();
+
+	useEffect(() => {
+		const onExpenseAdded = (expense: IExpense) => {
+			setExpenses(prev => [expense, ...prev]);
+		};
+
+		const onExpenseUpdated = (expense: Partial<IExpense>) => {
+			setExpenses(prev => prev.map(e => (e._id === expense._id ? { ...e, ...expense } : e)));
+		};
+
+		const onExpenseRemoved = (expenseId: string) => {
+			setExpenses(prev => prev.filter(e => e._id !== expenseId));
+		};
+
+		socketService.on(SOCKET_EVENT_EXPENSE_ADDED, onExpenseAdded);
+		socketService.on(SOCKET_EVENT_EXPENSE_UPDATED, onExpenseUpdated);
+		socketService.on(SOCKET_EVENT_EXPENSE_REMOVED, onExpenseRemoved);
+		return () => {
+			socketService.off(SOCKET_EVENT_EXPENSE_ADDED, onExpenseAdded);
+			socketService.off(SOCKET_EVENT_EXPENSE_UPDATED, onExpenseUpdated);
+			socketService.off(SOCKET_EVENT_EXPENSE_REMOVED, onExpenseRemoved);
+		};
+	}, []);
 
 	useUpdateEffect(() => {
 		const getRanges = async () => {
@@ -43,8 +73,9 @@ const ExpenseIndex = () => {
 			try {
 				const newExpenses = await expenseService.query(filterBy);
 				setExpenses(newExpenses);
-			} catch {
-				showErrorMsg('Error loading expenses');
+			} catch (err: any) {
+				const errorMsg = err.response?.data?.msg || 'Cannot load expenses';
+				showErrorMsg(errorMsg);
 			}
 		};
 
@@ -54,6 +85,7 @@ const ExpenseIndex = () => {
 	const onRemoveExpense = async (expenseId: string) => {
 		try {
 			await expenseService.remove(expenseId);
+			socketService.emit(SOCKET_EMIT_REMOVE_EXPENSE, expenseId);
 			setExpenses(prev => prev!.filter(e => e._id !== expenseId));
 		} catch (err: any) {
 			const errorMsg = err.response?.data?.msg || 'Cannot delete expense';
