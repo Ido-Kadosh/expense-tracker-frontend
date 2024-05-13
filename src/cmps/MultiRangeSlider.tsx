@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import useUpdateEffect from '../hooks/useUpdateEffect';
 
 interface PropTypes {
 	min: number;
@@ -8,7 +9,6 @@ interface PropTypes {
 const MultiRangeSlider = ({ min, max, onChange }: PropTypes) => {
 	const [minVal, setMinVal] = useState(min);
 	const [maxVal, setMaxVal] = useState(max);
-
 	const range = useRef<HTMLInputElement>(null);
 
 	// Convert to percentage
@@ -34,7 +34,7 @@ const MultiRangeSlider = ({ min, max, onChange }: PropTypes) => {
 		}
 	}, [maxVal, getPercent]);
 
-	useEffect(() => {
+	useUpdateEffect(() => {
 		onChange(minVal, maxVal);
 	}, [minVal, maxVal]);
 
