@@ -6,7 +6,7 @@ import { UserMsg } from './cmps/userMsg';
 
 function App() {
 	return (
-		<main className="grid w-full max-w-7xl m-auto pt-5 2xl:px-0 px-5">
+		<main className="flex flex-col w-full max-w-7xl m-auto pt-5 2xl:px-0 px-5">
 			<MsgProvider>
 				<Router>
 					<Routes>

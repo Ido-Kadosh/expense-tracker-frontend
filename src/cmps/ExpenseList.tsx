@@ -9,10 +9,10 @@ const ExpenseList = ({ expenses, onRemoveExpense }: PropTypes) => {
 	if (!expenses.length) return <div>No expenses found matching this criteria</div>;
 	return (
 		<div>
-			<h2 className="text-2xl font-bold mb-5  border-b">Expenses</h2>
-			<ul className="space-y-2">
+			<h2 className="text-2xl font-bold mb-5 border-b">Expenses</h2>
+			<ul className="flex flex-col gap-2 px-4">
 				{expenses.map(expense => (
-					<li key={expense._id}>{<ExpensePreview expense={expense} onRemoveExpense={onRemoveExpense} />}</li>
+					<ExpensePreview key={expense._id} expense={expense} onRemoveExpense={onRemoveExpense} />
 				))}
 			</ul>
 		</div>

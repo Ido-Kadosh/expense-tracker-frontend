@@ -34,16 +34,14 @@ const ExpenseFilter = ({ filterBy, onSetFilterBy, ranges }: PropTypes) => {
 
 	return (
 		<form className="flex items-center gap-3">
-			<div>
-				<input
-					type="text"
-					placeholder="Title"
-					name="title"
-					value={filterByToEdit.title}
-					onChange={handleChange}
-					className="primary-input"
-				/>
-			</div>
+			<input
+				type="text"
+				placeholder="Title"
+				name="title"
+				value={filterByToEdit.title}
+				onChange={handleChange}
+				className="primary-input"
+			/>
 			<MultiRangeSlider min={ranges.min} max={ranges.max} onChange={handlePriceChange} />
 		</form>
 	);
