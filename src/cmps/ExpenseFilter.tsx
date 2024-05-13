@@ -47,7 +47,7 @@ const ExpenseFilter = ({ filterBy, onSetFilterBy, ranges }: PropTypes) => {
 	};
 
 	return (
-		<div className="flex items-center">
+		<>
 			<form className="flex gap-3 items-center">
 				<input
 					type="text"
@@ -66,7 +66,7 @@ const ExpenseFilter = ({ filterBy, onSetFilterBy, ranges }: PropTypes) => {
 					))}
 				</ScrollableContent>
 			)}
-		</div>
+		</>
 	);
 };
 

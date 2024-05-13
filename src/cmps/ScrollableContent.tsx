@@ -16,6 +16,11 @@ const ScrollableContent = ({ children }: PropTypes) => {
 			setShowArrows(hasOverflow);
 		};
 
+		const resizeObserver = new ResizeObserver(checkOverflow);
+		if (scrollRef.current) {
+			resizeObserver.observe(scrollRef.current);
+		}
+
 		checkOverflow();
 		window.addEventListener('resize', checkOverflow);
 
@@ -44,7 +49,7 @@ const ScrollableContent = ({ children }: PropTypes) => {
 					<MdOutlineArrowBackIos />
 				</button>
 			)}
-			<ul className="flex flex-1 gap-2 px-8 scroll-smooth whitespace-nowrap no-scrollbar overflow-auto" ref={scrollRef}>
+			<ul className="flex gap-2 px-8 scroll-smooth whitespace-nowrap no-scrollbar overflow-auto" ref={scrollRef}>
 				{children}
 			</ul>
 			{showArrows && (
